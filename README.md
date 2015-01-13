@@ -2,6 +2,7 @@ linux-scripts
 =============
 
 Mainly small scripts and config files, for my dCore setup.
+dCore is a minimalistic live Linux system based on Micro Core (part of the Tiny Core Linux project), which can fetch, manage and install Debian packages.
 
 JWM scripts:
 
