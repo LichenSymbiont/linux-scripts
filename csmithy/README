@@ -1,0 +1,14 @@
+=== Purpose ===
+For testing components of larger programs, and for writing simple C/C++ programs, with the aid of the custom-built CAPI header.
+I just wanted to share a simple environment for building simple C/C++ programs by just running make && ./program_name.
+
+=== Programs ===
+genmusic:
+Just generating a soundwave... will add something more interesting to this soon...
+
+=== Plan ===
+I have already made an FLTK-based program for quick prototyping of GUI applications, using DLL's, so the progress for this little testing environment won't be fast.
+
+Feel free to add small example programs and such!
+
+I may add some ncurses examples later.

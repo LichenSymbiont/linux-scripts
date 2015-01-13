@@ -1,0 +1,12 @@
+=== Using it ===
+Before starting JWM: (from TTY or other WM)
+First place the scripts and config files in the home directory, then execute jwm-application-menu.sh, to generate the main menu.
+And to have JWM recognize it, you have to add a "." to the beginning of the file-name.
+
+To use the JWM config file properly, you must add poweroff and reboot to the programs you can run with sudo from a regular user.
+
+Note: not tested in dCore yet! this is my own modified JWM configuration for ArchLinux.
+
+=== Future ===
+JWM is a really fast and lightweight WM, and it has all the features you really need.
+So it would be nice to add more menus for other stuff, like a quick way of installing packages in dCore by having categorized packages in menus.

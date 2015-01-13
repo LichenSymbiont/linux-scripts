@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<JWM>
+
+<Include>/home/tc/jwm-file-menu</Include>
+
+<Tray x="0" y="0" height="48" autohide="true">
+	<TrayButton label="Files">root:3</TrayButton>
+	
+	<TrayButton label="_">showdesktop</TrayButton>
+	
+	<TrayButton popup="Home" icon="rox.png" border="false">exec:rox</TrayButton>
+	
+	<TrayButton popup="Geany" icon="geany.png" border="false">exec:geany</TrayButton>
+		
+	<TrayButton popup="Dillo" icon="web-browser.png" border="false">exec:dillo</TrayButton>
+		
+	<TrayButton label="Term" popup="terminal" icon="/usr/share/pixmaps/aterm.png" border="false">exec:aterm</TrayButton>
+
+</Tray>
+</JWM>
