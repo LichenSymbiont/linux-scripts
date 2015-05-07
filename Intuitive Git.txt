@@ -1,0 +1,38 @@
+Intuitive Git:
+Just listing commands now, to not forget myself!
+
+git help
+For the built-in help text! With all the essential commands.
+git help -g
+For the built-in guide!
+
+To get started:
+git clone https://github.com/LichenSymbiont/linux-scripts
+Or whatever repository you want to clone (copy to your computer, in the folder you are located in).
+
+cd into the directory, like "cd linux-scripts".
+
+So now you can make changes to the repo, and have a terminal open for running Git commands in.
+
+Change your local Git tree:
+git add .
+
+Make the files registered in the temporary commit tree to be committed as actual changes to your local repo:
+git commit
+
+And if you've just made changes, and not created new folders and files:
+git commit -a
+This will commit all the changes to files directly (not new files), without having to run "add ." .
+
+Check if there are changes made to the online repo: (and if there are files not committed)
+git status
+
+And if there are changes made:
+git fetch
+Which just gets the Git objects.
+git diff [file]
+
+And finally:
+git push
+To push the committed changes to the online repo.
+
