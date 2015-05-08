@@ -6,6 +6,10 @@ For the built-in help text! With all the essential commands.
 git help -g
 For the built-in guide!
 
+Before you can push anything to a repository, you have to set up Git, with:
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+
 To get started:
 git clone https://github.com/LichenSymbiont/linux-scripts
 Or whatever repository you want to clone (copy to your computer, in the folder you are located in).
@@ -24,15 +28,14 @@ And if you've just made changes, and not created new folders and files:
 git commit -a
 This will commit all the changes to files directly (not new files), without having to run "add ." .
 
-Check if there are changes made to the online repo: (and if there are files not committed)
+Check there are files not committed:
 git status
 
 And if there are changes made:
 git fetch
-Which just gets the Git objects.
+Which just gets the Git objects from the online repo.
 git diff [file]
 
 And finally:
 git push
 To push the committed changes to the online repo.
-

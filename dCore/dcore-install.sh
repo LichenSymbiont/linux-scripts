@@ -38,7 +38,7 @@ done
 }
 
 echo "Set the partition you want to install dCore to (should be a Linux file-system). And if the partition you want to install to doesn't apprear, you might try your luck after rebooting and re-running this script (exit and reboot by \"sudo reboot\")."
-tce-setdrive 
+#tce-setdrive 
 
 wms="flwm_topside jwm fluxbox openbox icewm dwm uwm aewm++"
 i=1
@@ -67,6 +67,7 @@ for s in $extras; do
 echo "$i - $s"
 i=`expr $i + 1`
 done
+
 echo "Pick program: (type 0 to get on with it)"
 read i
 if not [ $i == "0" ]; then
@@ -79,8 +80,9 @@ done
 
 echo "Extra programs to be installed: $your_picks"
 echo "Automate the Xorg configuration process, and start X after install? (\"y\" for yes)"
+autox=""
 read ans
-if [ $ans == "y" ]; then
+if [[ $ans == "y" ]]; then
 autox="y"
 fi
 
@@ -89,35 +91,30 @@ fi
 echo "Importing lspci for finding your drivers, and for making bug-reports with."
 #sce-import -rbn lspci
 
-#Here I use Bash: (should use cases)
+#VGA drivers: (so "3D controller" may still be Nvidia, and require Bumblebee to function properly)
 graphics=$(lspci | grep -m 1 "VGA")
-if [[ $graphics == *Intel* ]]; then
-graphics="intel"
-else
-	if [[ $graphics == *NVIDIA* ]]; then
-	graphics="nv"
-	else
-		if [[ $graphics == *ATI* ]]; then
-		graphics="ati"
-		else
-		graphics="all"
-		fi
-	fi
-fi
+case ${graphics} in
+	*Intel*) graphics="intel" ;;
+	*NVIDIA) graphics="nv" ;;
+	*ATI) graphics="ati" ;;
+	*) graphics="all" ;;
+esac
+
+echo "Graphics card: $graphics"
 
 #Install the packages:
 #install_packages
 
 
 #Write the WM to the tc users xinitrc script:
-if grep -m 1 "#WM:" ~/xinitrc > /dev/null 2>&1; then
+if [ grep -m 1 "#WM:" ~/xinitrc > /dev/null 2>&1 ]; then
 #replace the line under "#WM:" (+ tmpfile magic to not break sed, by writing to the file you're reading from):
 sed "/#WM:/{n;s/.*/$wm/}" ~/xinitrc > tmpfile && mv tmpfile ~/xinitrc
 else
 printf "#WM:\n$wm\n" >> ~/xinitrc
 fi
 
-if [ $autox == "y" ]; then
+if [[ $autox == "y" ]]; then
 sudo Xorg -configure
 sudo mv /newconfigfile /etc/X11/um...
 #could we just use Puppy's xorg startup script?
@@ -126,4 +123,4 @@ else
 echo "Now you can configure Xorg and the rest yourself! Have fun!"
 fi
 
-backup
+#backup
