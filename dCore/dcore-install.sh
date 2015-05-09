@@ -20,20 +20,48 @@
 
 #TODO:
 #Colored text.
+#Setup keyboard layout for TTY first!
+#Find dependencies for all extra packages selected, and import them into a base.sce extension.
+#In the future, you will be able to search other packages from this script, and select a bunch yourself.
+#But for now, getting the basics set up is good enough, then you can install the rest in a terminal on your desktop.
+#Disk partitioning with cfdisk... or something.
 #Catch errors from commands and deal with them!
 #Borrowing from the Arch Install Scripts!
 
-install_packages(){ #Install the packages:
-sce-import -brn Xprogs
-sce-import -brn gtk2
-#and so on... until it contains the libraries that most GTK programs uses.
-sce-import -brn $wm
+pkg_flags="-bn"
+suffic_ram=200
+kernvr`uname -r`
 
-sce-import -brn Xorg-$graphics
+ram=`grep MemTotal /proc/meminfo | awk '{print $2/1024}' | sed 's/\..*//'`
+echo "You have $ram MB of RAM."
+if [ $ram -gt $suffic_ram ]; then
+pkg_flags="${pkg_flags}r"
+echo "You have more than $suffic_ram MB of RAM; will use RAM to store transitory files."
+fi
+
+install_packages(){ #Install the packages:
+echo "Now just wait for the package download and installation to complete."
+sleep 2
+
+sce-import $pkg_flags Xprogs
+sce-import $pkg_flags gtk2
+#and so on... until it contains the lib#-------------------------------------------------------------------------------
+
+sce-import $pkg_flags $wm
+
+sce-import $pkg_flags Xorg-$graphics
+
+#mockup sound installation:
+if [[ $sound == "alsa" ]]; then
+sce-import $pkg_flags alsa-modules-${kernvr}-tinycore
+sce-import $pkg_flags alsa-utils
+else if [[ $sound == "oss" ]]; then
+
+fi
 
 #Install the extras you picked:
 for s in $your_picks; do
-sce-import -brn $s
+sce-import $pkg_flags $s
 done
 }
 
@@ -58,27 +86,41 @@ read $wm
 fi
 echo "You picked $wm"
 
-extras="wbar conky tilda gcc xvesa"
+extras="wbar conky tilda build-essential xvesa"
 echo "Pick extra programs that you'd like to install: (wbar is really useful when just using fltk_topside)"
 your_picks=""
 while [ 1==1 ]; do
-i=1
-for s in $extras; do
-echo "$i - $s"
-i=`expr $i + 1`
-done
+	i=1
+	for s in $extras; do
+	echo "$i - $s"
+	i=`expr $i + 1`
+	done
 
-echo "Pick program: (type 0 to get on with it)"
-read i
-if not [ $i == "0" ]; then
-pick=$(echo $extras | awk '{print($'$i')}')
-your_picks="$your_picks $pick"
-else
-break
-fi
+	echo "Pick program: (type 0 to get on with it)"
+	read i
+	if not [ $i == "0" ]; then
+	pick=$(echo $extras | awk '{print($'$i')}')
+	extras=`echo $extras | sed "s/$pick//g"`
+	your_picks="$your_picks $pick"
+	else
+	break
+	fi
 done
 
 echo "Extra programs to be installed: $your_picks"
+
+echo "What sound system to install?"
+echo "0 - none"
+echo "1 - Alsa"
+echo "2 - OSS"
+read i
+case $i in
+	0) sound="" ;;
+	1) sound="alsa" ;;
+	2) sound="oss" ;;
+	*) sound="" ;;
+esac
+
 echo "Automate the Xorg configuration process, and start X after install? (\"y\" for yes)"
 autox=""
 read ans
@@ -95,8 +137,8 @@ echo "Importing lspci for finding your drivers, and for making bug-reports with.
 graphics=$(lspci | grep -m 1 "VGA")
 case ${graphics} in
 	*Intel*) graphics="intel" ;;
-	*NVIDIA) graphics="nv" ;;
-	*ATI) graphics="ati" ;;
+	*NVIDIA*) graphics="nv" ;;
+	*ATI*) graphics="ati" ;;
 	*) graphics="all" ;;
 esac
 
@@ -106,7 +148,7 @@ echo "Graphics card: $graphics"
 #install_packages
 
 
-#Write the WM to the tc users xinitrc script:
+#Write the WM to the tc users xinitrc script: (using xinitrc instead of .initrc -- for testing)
 if [ grep -m 1 "#WM:" ~/xinitrc > /dev/null 2>&1 ]; then
 #replace the line under "#WM:" (+ tmpfile magic to not break sed, by writing to the file you're reading from):
 sed "/#WM:/{n;s/.*/$wm/}" ~/xinitrc > tmpfile && mv tmpfile ~/xinitrc
