@@ -5,6 +5,10 @@ git help
 For the built-in help text! With all the essential commands.
 git help -g
 For the built-in guide!
+git help tutorial
+For a nice little tutorial.
+
+Read it all! This is just some practical examples, and far from all the useful commands.
 
 Before you can push anything to a repository, you have to set up Git, with:
 git config --global user.email "you@example.com"
