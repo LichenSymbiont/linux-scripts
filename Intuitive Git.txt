@@ -28,13 +28,22 @@ And if you've just made changes, and not created new folders and files:
 git commit -a
 This will commit all the changes to files directly (not new files), without having to run "add ." .
 
-Check there are files not committed:
+Check if there are files not committed:
 git status
 
-And if there are changes made:
+And to check if there are changes made to the online/remote repo:
 git fetch
-Which just gets the Git objects from the online repo.
-git diff [file]
+Which just gets the Git objects from the online repo (or not, if you're up-to-date).
+git diff [branch] [file]
+Like:
+git diff origin/master
+To check all files.
+
+To merge your changes with the changes in the remote branch:
+git merge
+And make any needed changes and:
+git merge --abort
+If conflicts arise, where you will have to align your code better to the remote branch.
 
 And finally:
 git push
